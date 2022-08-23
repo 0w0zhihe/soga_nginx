@@ -276,8 +276,8 @@ getData() {
             res=`echo -n ${resolve} | grep ${IP}`
             if [[ -z "${res}" ]]; then
                 colorEcho ${BLUE}  "${DOMAIN} 解析结果：${resolve}"
-                colorEcho ${RED}  " 域名未解析到当前服务器IP(${IP})!"
-                exit 1
+                colorEcho ${RED}  " 接口异常请自行检测解析结果(${IP})!"
+                
             fi
         fi
     fi
@@ -2007,19 +2007,22 @@ menu() {
     fi
     configNginx
     soga restart
-    service nginx start
+    service nginx restart
 	colorEcho $RED
 	colorEcho $GREEN "安装完成，v2ray监听端口为${V2PORT} ,nginx监听端口为${PORT}!"
-	colorEcho $GREEN "v2board 对接设置服务端口为${V2PORT} ,连接端口为${PORT}!"
-	colorEcho $GREEN "传输协议配置如下："
+	colorEcho $GREEN "-----------v2board节点配置-----------------------------"
+	colorEcho $RED " 设置服务端口为${V2PORT} ,连接端口为${PORT}!"
+	colorEcho $RED "传输协议配置如下："
 	colorEcho $RED  "{"
 	colorEcho $RED  "\"path\": \"${WSPATH}\","	
 	colorEcho $RED  "\"headers\": {"
 	colorEcho $RED  "      \"Host\": \"${DOMAIN}\""	
 	colorEcho $RED  "}"
 	colorEcho $RED  "}"	
+	colorEcho $GREEN "----------sspanel节点配置----------------------"
+	colorEcho $RED  "${IP};${V2PORT};0;ws;tls;path=${WSPATH}|server=${IP}|host=${DOMAIN}"	
 			#soga config force_close_ssl=true
-			
+			#|outside_port=${PORT}
 			# {
             # "path": "/login",
             # "headers": {
